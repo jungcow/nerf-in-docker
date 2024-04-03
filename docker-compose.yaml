@@ -1,0 +1,25 @@
+version: "2.5"
+services:
+    nerf-pytorch:
+        image: 023354755071.dkr.ecr.us-east-1.amazonaws.com/dlc-nerf-pytorch:latest
+        container_name: nerf-pytorch
+        working_dir: /home/workspace/nerf-pytorch
+        volumes:
+            - ./share/nerf-pytorch/:/home/volumes
+        deploy:
+            resources:
+                reservations:
+                    devices:
+                        - driver: nvidia
+                          capabilities: [gpu]
+        environment:
+            - ENV NVIDIA_VISIBLE_DEVICES=all
+        command: 
+            - python
+            - run_nerf.py
+            - --config
+            - 'configs/koncow.txt'
+            - --N_iters
+            - '100000'
+            - --i_video
+            - '20000'
